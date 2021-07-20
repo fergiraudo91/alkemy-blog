@@ -38,9 +38,66 @@ code {
   -moz-box-shadow: 4px 7px 5px 2px rgba(0, 0, 0, 0.75);
 }
 
+.loading-spinner{
+  margin-bottom: 20%;
+}
+
+.container-component{
+  height: 100%;
+}
+
+.post{
+  border-radius: 5px;
+}
+
+.actions{
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.actions i{
+  margin: 2px;
+  padding: 2px;
+  cursor: pointer;
+  transition: color .4s ease;
+}
+
+
+.actions i:hover {
+  color: #FFC30F;
+}
+
+.actions i:last-child:hover{
+  color: #D8000C;
+}
+
 @media screen and (max-width: 800px) {
   .login-form{
     width: 80%;
+  }
+  
+}
+
+@media screen and (max-width: 800px) {
+  .loading-spinner{
+    margin-bottom: 60%;
+  }
+  
+}
+
+@media screen and (max-width: 400px) {
+  .loading-spinner{
+    margin-bottom: 80%;
+  }
+  
+}
+
+@media screen and (max-width: 600px) {
+  .post{
+    width: 100%;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
   }
   
 }

@@ -2,8 +2,13 @@ import React from 'react';
 import { Formik, Form } from 'formik';
 import { TextField } from '../../components/UI/TextField';
 import * as Yup from 'yup';
+import { useDispatch } from 'react-redux';
+import { startLogin } from '../../actions/auth';
+import { Container } from '../../components/UI/Container';
 
 export const LoginScreen = () => {
+    const dispatch = useDispatch();
+
     const validate = Yup.object({
         mail: Yup.string().email('It must to be a valid email')
         .required('Email is Required'),
@@ -11,7 +16,8 @@ export const LoginScreen = () => {
             .required('Passsword is required!')
     });
     const handleSubmit = (values) => {
-        console.log(values);
+        const {mail, password} = values;
+        dispatch(startLogin(mail, password));
     }
     return (
         <Formik
@@ -26,7 +32,7 @@ export const LoginScreen = () => {
         >
             {
                 formik => (
-                    <div className="bg-dark row align-items-center vh-100 justify-content-center main-form flex-column">
+                    <Container>
                         <div className="login-form">
                         <h1 className="text-white text-center">LogIn</h1>
                         <Form>
@@ -35,7 +41,7 @@ export const LoginScreen = () => {
                             <button className="btn btn-light mt-3" type="submit">Login</button>
                         </Form>
                         </div>
-                    </div>
+                    </Container>
                 )
             }
         </Formik>

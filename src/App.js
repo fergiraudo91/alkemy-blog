@@ -1,11 +1,14 @@
+import { Provider } from "react-redux";
+import { Home } from "./pages/Home/Home";
 import { LoginScreen } from "./pages/Login/LoginScreen";
+import { store } from "./store/store";
 
 
 function App() {
   return (
-    <div className="App">
-      <LoginScreen />
-    </div>
+    <Provider store={store}>
+      <Home />
+    </Provider>
   );
 }
 
