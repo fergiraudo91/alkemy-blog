@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export const Posts = ({ posts, loading }) => {
+export const Posts = ({ posts, loading, onDelete }) => {
 
   if (loading) {
     return (
@@ -37,6 +37,7 @@ export const Posts = ({ posts, loading }) => {
               data-toggle="tooltip"
               data-placement="bottom"
               title="Delete Post"
+              onClick={() => onDelete(post.id)}
             ></i>
           </div>
         </div>
