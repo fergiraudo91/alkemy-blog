@@ -18,6 +18,7 @@ export const LoginScreen = () => {
     const handleSubmit = (values) => {
         const {mail, password} = values;
         dispatch(startLogin(mail, password));
+        
     }
     return (
         <Formik
@@ -32,7 +33,7 @@ export const LoginScreen = () => {
         >
             {
                 formik => (
-                    <Container>
+                    <div className={`bg-dark row align-items-center container-component justify-content-center main-form flex-column vh-100`}>
                         <div className="login-form">
                         <h1 className="text-white text-center">LogIn</h1>
                         <Form>
@@ -41,7 +42,7 @@ export const LoginScreen = () => {
                             <button className="btn btn-light mt-3" type="submit">Login</button>
                         </Form>
                         </div>
-                    </Container>
+                    </div>
                 )
             }
         </Formik>

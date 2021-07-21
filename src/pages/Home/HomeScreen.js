@@ -4,7 +4,7 @@ import { Container } from '../../components/UI/Container'
 import { Pagination } from '../../components/UI/Pagination';
 import { fetchAllPosts } from '../../helpers/fetch';
 
-export const Home = () => {
+export const HomeScreen = () => {
 
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(false);
