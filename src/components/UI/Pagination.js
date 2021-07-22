@@ -5,6 +5,7 @@ export const Pagination = ( {postPerPage = 10, totalPosts, paginate}) => {
     for(let i=1; i<= Math.ceil(totalPosts / postPerPage); i++){
         pageNumbers.push(i);
     }
+    
     return (
         <nav>
             <ul className="pagination">

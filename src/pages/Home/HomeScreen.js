@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import Swal from 'sweetalert2';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCurrentPage, startDelete, startGettingPosts } from '../../actions/posts';
 import { Posts } from '../../components/Posts/Posts';
 import { Container } from '../../components/UI/Container'
 import { Pagination } from '../../components/UI/Pagination';
@@ -7,55 +8,27 @@ import { fetchAllPosts } from '../../helpers/fetch';
 
 export const HomeScreen = () => {
 
-    const [posts, setPosts] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [currentPage, setcurrentPage] = useState(1);
-
-    //Get current posts
-    const indexOfLastPost = currentPage * 10;
-    const indexOfFirstPost = indexOfLastPost - 10;
-    const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
-
-    const paginate = (pageNumber) => setcurrentPage(pageNumber);
-    const url = "https://jsonplaceholder.typicode.com/posts";
-
-    const onDelete = async (id) => {
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#343a40',
-            confirmButtonText: 'Yes, delete it!'
-          }).then((result) => {
-            if (result.isConfirmed) {
-            
-                fetch(`${url}/${id}`, {
-                    method: 'DELETE'
-                })
-                .then(resp => {
-                    if(resp.ok){
-                        setPosts(posts.filter(post => post.id !== id));
-                        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
-                    }
-                })
-
-
-            }
-          })
-    }
+    const dispatch = useDispatch();
+    const { posts, loading, currentPage } = useSelector(state => state.posts)
+    
+    const [currentPosts, setcurrentPosts] = useState([]);
 
     useEffect(() => {
-        const awaitPost = async () => {
-            setLoading(true);
-            const resp = await fetchAllPosts();
-            const data = await resp.json();
-            setPosts(data);
-            setLoading(false);
-        }
-        awaitPost();
-    }, []);
+
+        const starIndextPost = (currentPage - 1) * 10;
+        const finalIndexPost = starIndextPost + 10;
+        
+        setcurrentPosts(posts.slice(starIndextPost, finalIndexPost));
+
+    }, [posts, currentPage]);
+
+    //Get current posts
+
+    const paginate = (pageNumber) => {dispatch(setCurrentPage(pageNumber))};
+
+    const onDelete = async (id) => {
+        dispatch(startDelete(id));
+    }
 
     return (
         <>

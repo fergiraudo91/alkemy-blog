@@ -1,12 +1,14 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { startLogout } from "../../actions/auth";
+import { clearAllPosts } from "../../actions/posts";
 
 export const Navbar = () => {
   const dispatch = useDispatch();
   const handleLogout = () => {
     dispatch(startLogout());
+    dispatch(clearAllPosts())
   };
 
   return (
@@ -14,9 +16,9 @@ export const Navbar = () => {
       className="navbar navbar-expand-lg navbar-light "
       style={{ backgroundColor: "#CCC" }}
     >
-      <NavLink className="navbar-brand" to="/" activeClassName="active">
+      <Link className="navbar-brand" to="/">
         Blog
-      </NavLink>
+      </Link>
       <button
         className="navbar-toggler"
         type="button"

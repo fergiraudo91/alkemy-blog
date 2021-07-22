@@ -6,6 +6,7 @@ import {
   Route,
 } from "react-router-dom";
 import { login, startLogin } from '../actions/auth';
+import { startGettingPosts } from '../actions/posts';
 import { LoginScreen } from '../pages/Login/LoginScreen';
 import { DashboardRoutes } from './DashboardRoutes';
 import { PrivateRoute } from './PrivateRoute';
@@ -25,6 +26,13 @@ export const AppRouter = () => {
        }
 
     }, [dispatch]);
+
+    useEffect(() => {
+      const awaitPost = async () => {
+          dispatch(startGettingPosts());
+      }
+      awaitPost();
+  }, [dispatch]);
     
     return (
         <Router>

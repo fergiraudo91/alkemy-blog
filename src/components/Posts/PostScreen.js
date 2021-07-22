@@ -28,7 +28,7 @@ export const PostScreen = () => {
         </section>
         <footer>
           <Link className="btn btn-dark mr-4 mt-3" to="/">
-            Return <i class="fas fa-undo-alt"></i>
+            Return <i className="fas fa-undo-alt"></i>
           </Link>
         </footer>
       </main>

@@ -26,12 +26,14 @@ export const Posts = ({ posts, loading, onDelete }) => {
               data-placement="bottom"
               title="See Post"
             ></i> </Link>
+            <Link to={`/edit/${post.id}`}>
             <i
               className="far fa-edit"
               data-toggle="tooltip"
               data-placement="bottom"
               title="Edit Post"
             ></i>
+            </Link>
             <i
               className="fas fa-trash"
               data-toggle="tooltip"

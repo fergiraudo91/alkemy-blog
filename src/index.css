@@ -115,10 +115,11 @@ code {
     margin-right: 0 !important;
     margin-left: 0 !important;
   }
-}
-
-@media screen and (max-width: 600px) {
   .main-post {
     width: 90% !important;
+  }
+
+  .post-form{
+    width:  90% !important;
   }
 }
