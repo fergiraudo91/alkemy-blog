@@ -22,7 +22,6 @@ export const postReducer = (state = initialState, action) => {
             }
 
         case types.postAddNew:
-            console.log(action.payload);
             return{
                 ...state,
                 posts: [
@@ -35,6 +34,16 @@ export const postReducer = (state = initialState, action) => {
             return {
                 ...state,
                 currentPage: action.payload
+            }
+        case types.postUpdate:
+
+        console.log(action.payload.id);
+            return{
+                ...state,
+                posts: [
+                    ...state.posts.map(el => el.id === action.payload.id ? action.payload : el)
+                ],
+                
             }
         case types.postClearAll:
             return initialState

@@ -1,80 +1,92 @@
-import React, { useEffect, useState } from 'react'
-import { Formik, Form } from 'formik';
-import { TextField } from '../../components/UI/TextField';
+import React from "react";
+import { useFormik } from "formik";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { startAddNewPost, startUpdatePost } from "../../actions/posts";
 import * as Yup from 'yup';
-import { TextAreaField } from '../UI/TextAreaField';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-import { startAddNewPost } from '../../actions/posts';
-import { useParams } from 'react-router-dom';
 
-export const EditPost = () => {
-    
-    const params = useParams();
-    const id = params.id ? +params.id : 0;
-    const { posts } = useSelector(state => state.posts);
-    const [post, setpost] = useState({});
+const validate = values => {
+  const errors = {};
+  if (!values.title) {
+    errors.title = 'Required';
+  } else if (values.title.length < 5) {
+    errors.title = 'Must be more than 5 characters at least';
+  }
 
-    const dispatch = useDispatch();
-    console.log(Object.keys(post).length);
+  if (!values.body) {
+    errors.body = 'Required';
+  } else if (values.body.length < 10) {
+    errors.body = 'Must be 10 characters at least';
+  }
 
-    useEffect(() => {
-        
-        if(id > 0){
-            setpost(posts.find(el => el.userId === id));
+  return errors;
+};
+
+export const EditPost = ({history}) => {
+  const url = "https://jsonplaceholder.typicode.com/posts";
+  const dispatch = useDispatch();
+  const params = useParams();
+  const id = Object.keys(params).length > 0 ? +params.id : 0;
+  const { posts } = useSelector((state) => state.posts);
+  const post = posts.find((el) => el.id === id) || false;
+
+  const formik = useFormik({
+    initialValues: {
+      title: `${post ? post.title : ""}`,
+      body: `${post ? post.body : ""}`,
+    },
+    validate,
+    onSubmit: async (values) => {
+      if (!post) {
+        const resp = await fetch(
+          `${url}?userId=1&title=${values.title}&body=${values.body}}`
+        );
+        if (resp.ok) {
+          dispatch(startAddNewPost(values, 1));
         }
-    }, [id, posts, post])
+      } else {
+        console.log("Hello");
+        dispatch(startUpdatePost(values, 1, id));
+      }
+    },
+  });
+  return (
+    <div
+      className={`bg-dark row align-items-center container-component justify-content-center main-form flex-column vh-100`}
+    >
+      <div className="login-form w-50 post-form">
+        <form onSubmit={formik.handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="title">Title</label>
+            <input
+              className="form-control"
+              id="title"
+              name="title"
+              type="text"
+              onChange={formik.handleChange}
+              value={formik.values.title}
+            />
+            {formik.errors.title ? <div className="error">{formik.errors.title}</div> : null}
+          </div>
 
-    const validate = Yup.object({
-        title: Yup.string().min(2, 'It must have 2 characters at least')
-        .required('Title is Required'),
-        message: Yup.string().min(5, 'It must to have 5 characters at least')
-            .required('The Message is required!')
-    });
+          <div className="form-group">
+            <label htmlFor="body">Message</label>
+            <textarea
+              className="form-control"
+              id="body"
+              name="body"
+              type="text"
+              onChange={formik.handleChange}
+              value={formik.values.body}
+            />
+            {formik.errors.body ? <div className="error">{formik.errors.body}</div> : null}
+          </div>
 
-    const handleSubmit = (values) => {
-        const userId = 1;
-        if(id === 0){
-            dispatch(startAddNewPost(values, userId));
-        }
-    }
-
-    return (
-        <div className={`bg-dark row align-items-center container-component justify-content-center main-form flex-column vh-100`}>
-            {console.log(post.title, post.body)}
-            <Formik
-            
-            initialValues={{
-                title: `${Object.keys(post).length > 0 ? post.title : ''}`, 
-                message: `${Object.keys(post).length > 0 ? post.body : ''}`
-            }}
-            validationSchema={validate}
-            onSubmit={values => {
-               handleSubmit(values);
-            }}
-        >
-            {
-                formik => (
-                    <div className={`bg-dark row align-items-center container-component w-50 post-form justify-content-center main-form flex-column vh-100`}>
-                        <div className="login-form w-100">
-                        <h1 className="text-white text-center">Post</h1>
-                        <Form>
-                            <TextField label="Title" name="title" type="text"
-                             value={`${Object.keys(post).length > 0 ? post.title : ''}`}
-                            />
-                            <TextAreaField label="Message" name="message" type="text"
-                             value={`${Object.keys(post).length > 0 ? post.body : ''}`}
-                            />
-                            <button className="btn btn-light mt-3" type="submit">{
-                            
-                            id === 0 ? 'Send Post' : 'Update Post'
-                            }</button>
-                        </Form>
-                        </div>
-                    </div>
-                )
-            }
-        </Formik>
-        </div>
-    )
-}
+          <button className="btn btn-light" type="submit">
+            {post ? "Edit Post" : "Add new Post"}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+};

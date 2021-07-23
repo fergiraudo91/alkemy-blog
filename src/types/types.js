@@ -9,5 +9,6 @@ export const types = {
     postClearAll: '[Post] Clear All',
     postDelete: '[Post] Delete',
     postAddNew: '[Post] Add New',
-    postSetCurrentPage: '[Post] Set Current Page'
+    postSetCurrentPage: '[Post] Set Current Page',
+    postUpdate: '[Post] Update'
 }

@@ -1,3 +1,4 @@
+
 import Swal from "sweetalert2";
 import { fetchAllPosts } from "../helpers/fetch";
 import { types } from "../types/types";
@@ -58,15 +59,18 @@ const deletePost = (id) => ({
 
 export const startAddNewPost = (values, userId) => {
 
-    const {title, message} = values;
+    const {title, body} = values;
     return async (dispatch) => {
         
-        const resp = await fetch(`${url}?userId=${userId}&title=${title}&body=${message}`,{
+        const resp = await fetch(`${url}?userId=${userId}&title=${title}&body=${body}`,{
             method: 'POST'
         });
         if(resp.ok){
-            dispatch(addNewPost(title, message, userId))
+            dispatch(addNewPost(title, body, userId))
             Swal.fire('Post added', 'The post was added', 'success');
+        }
+        else{
+            Swal.fire('Error', 'Contact the administrator', 'error');
         }
     }
 } 
@@ -76,11 +80,41 @@ const addNewPost = (title, body, userId) => ({
     payload: {
         title,
         body,
-        userId
+        userId,
+        id: Math.floor(Math.random() * 10000)
     }
 });
 
 export const setCurrentPage = (number) => ({
     type: types.postSetCurrentPage,
     payload: number
+});
+
+export const startUpdatePost = (post, userId, postId, history) => {
+    return async (dispatch) => {
+        const resp = await fetch(`${url}/${postId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                post, 
+                userId,
+                id: postId
+            }),
+        });
+        if(resp.ok){
+            dispatch(updatePost(post, userId, postId));
+            Swal.fire('Post updated', 'The post was updated succeeded', 'success');
+        }
+    }
+}
+
+const updatePost = (post, userId, postId) => ({
+    type: types.postUpdate,
+    payload: {
+        ...post,
+        id: postId,
+        userId
+    }
 })

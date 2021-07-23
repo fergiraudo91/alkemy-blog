@@ -91,6 +91,10 @@ code {
   justify-content: flex-end;
 }
 
+.actions i{
+  color: #5086C1;
+}
+
 @media screen and (max-width: 800px) {
   .login-form {
     width: 80%;
@@ -117,6 +121,9 @@ code {
   }
   .main-post {
     width: 90% !important;
+  }
+  .actions i{
+    font-size: 1.3rem;
   }
 
   .post-form{

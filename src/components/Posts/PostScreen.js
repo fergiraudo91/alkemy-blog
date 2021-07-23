@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 import { Container } from "../UI/Container";
 
 export const PostScreen = () => {
@@ -10,6 +11,9 @@ export const PostScreen = () => {
   useEffect(() => {
     const getPost = async () => {
       const resp = await fetch(`${url}${id}`);
+      if(!resp.ok){
+        Swal.fire('Error', 'could not get data from server', 'error');
+      }
       const data = await resp.json();
       setPost(data);
     };
